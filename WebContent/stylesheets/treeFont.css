@@ -1,0 +1,31 @@
+.x-tree-icon, .x-tree-ec-icon, .x-tree-elbow-line, .x-tree-elbow, .x-tree-elbow-end, .x-tree-elbow-plus, .x-tree-elbow-minus, .x-tree-elbow-end-plus, .x-tree-elbow-end-minus{
+    border: 0 none;
+    height: 35px;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    width: 16px;
+    background-repeat: no-repeat;
+}
+
+.x-tree-node-collapsed .x-tree-node-icon, .x-tree-node-expanded .x-tree-node-icon, .x-tree-node-leaf .x-tree-node-icon{
+    border: 0 none;
+    height: 35px; /*自定义节点的高度*/
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    width: 20px; /*调整节点离左边的距离*/
+    background-position:center;
+    background-repeat: no-repeat;
+}
+
+.x-tree-node-el {
+    line-height:35px;  /*节点高度*/
+    cursor:pointer;
+}
+
+/*树节点 节点图标与节点文字间的距离*/
+.x-tree-node a span, .x-dd-drag-ghost a span{
+    text-decoration:none;
+    padding:0px 0px 0px 10px;  /*第四个参数是调整文字离图标左边的距离*/
+}

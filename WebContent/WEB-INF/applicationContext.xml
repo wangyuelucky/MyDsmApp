@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+
+	<bean id="DataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://localhost:3306/hrm_db?useUnicode=true&amp;characterEncoding=utf-8</value>
+		</property>
+		<property name="username">
+			<value>root</value>
+		</property>
+		<property name="password">
+			<value>wangyue</value>
+		</property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="DataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/dsm/po/Userinfo.hbm.xml</value>
+				<value>com/dsm/po/Userrole.hbm.xml</value>
+				<value>com/dsm/po/TreeNode.hbm.xml</value>
+				<value>com/dsm/po/Stuff.hbm.xml</value>
+				<value>com/dsm/po/Injure.hbm.xml</value>
+				<value>com/dsm/po/Depart.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 创建一个事务管理器 ,class见右边spring-hibernate.jar-->
+	<bean id="transactionManager" 
+	      class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	     <property name="sessionFactory">
+	         <ref local="sessionFactory"/>
+	     </property>
+	</bean>
+	
+	 <!-- 首先创建事务拦截器 -->
+	 <bean id="transactionInterceptor" 
+	       class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	    <property name="transactionManager">
+	       <ref local="transactionManager"/>
+	    </property>
+	    
+	    <property name="transactionAttributes">
+	       <props>
+	          <prop key="add*">PROPAGATION_REQUIRED</prop>
+	       </props>
+	    </property>
+	 </bean>
+	 
+	  <!-- 自动代理下面定义的userService,即userServiceImpl类，为service层的类通过拦截器产生事务 -->
+	  <!-- 为什么代理的是userService而不是Action?????????? -->
+	 <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+	     <property name="beanNames">
+	        <list>
+	           <value>UserInfoBizImpl</value>
+	           <value>UserRoleBizImpl</value>
+	           <value>TreeNodeBizImpl</value>
+	           <value>StuffBizImpl</value>
+	           <value>DepartBizImpl</value>
+	        </list>
+	     </property>
+	     
+	     <property name="interceptorNames">
+	        <list>
+	           <value>transactionInterceptor</value>
+	        </list>
+	     </property>
+	 </bean>
+	
+	
+	
+	
+	<!-- 用户信息DAO -->
+	<bean id="UserinfoDAO"
+		class="com.dsm.dao.impl.UserinfoDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!-- 将用户信息DAO注入到业务类  -->
+	<bean id="UserInfoBizImpl"
+		class="com.dsm.biz.impl.UserInfoBizImpl">
+		<property name="iuidao" ref="UserinfoDAO"></property>
+	</bean>
+	<!-- 将用户信息业务注入到Action -->
+	<bean name="/userInfo"
+		class="com.dsm.action.UserInfoAction">
+		<property name="iuib" ref="UserInfoBizImpl"></property>
+	</bean>
+	
+	
+	
+	<!-- 用户权限DAO -->
+	<bean id="UserroleDAO"
+		class="com.dsm.dao.impl.UserroleDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!-- 将用户角色DAO注入到业务类 -->
+	<bean id="UserRoleBizImpl"
+		class="com.dsm.biz.impl.UserRoleBizImpl">
+		<property name="iurdao" ref="UserroleDAO"></property>
+	</bean>
+	<!-- 将用户角色业务注入action -->
+	<bean name="/userRole"
+		class="com.dsm.action.UserRoleAction">
+		<property name="iurb" ref="UserRoleBizImpl"></property>
+	</bean>
+	
+	
+	
+	<!-- 动态菜单DAO -->
+	<bean id="TreeNodeDAO"
+		class="com.dsm.dao.impl.TreeNodeDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!--将动态(treeNode)DAO注入业务类 -->
+	<bean id="TreeNodeBizImpl"
+		class="com.dsm.biz.impl.TreeNodeBizImpl">
+		<property name="treenodedao" ref="TreeNodeDAO"></property>
+	</bean>
+	<!-- treeNode 业务注入action -->
+	<bean name="/treeNode"
+		class="com.dsm.action.TreeNodeAction">
+		<property name="treenodeBiz" ref="TreeNodeBizImpl"></property>
+	</bean>
+	
+	
+	
+	<!-- 用户信息DAO -->
+	<bean id="StuffDao"
+		class="com.dsm.dao.impl.StuffDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!-- 将员工信息dao注入到业务(员工信息) -->
+	<bean id="StuffBizImpl"
+		class="com.dsm.biz.impl.StuffBizImpl">
+		<property name="istuffDao" ref="StuffDao"></property>
+	</bean>
+	<!-- 将员工信息业务注入到员工信息Action -->
+	<bean name="/stuff"
+		class="com.dsm.action.StuffAction">
+		<property name="istuffBiz" ref="StuffBizImpl"></property>
+	</bean>
+	
+	
+	
+	<!-- 工伤档案DAO -->
+	<bean id="InjureDao"
+		class="com.dsm.dao.impl.InjureDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!-- 将工伤档案dao注入到业务(工伤档案) -->
+	<bean id="InjureBizImpl"
+		class="com.dsm.biz.impl.InjureBizImpl">
+		<property name="iinjureDao" ref="InjureDao"></property>
+	</bean>
+	<!-- 将员工信息业务注入到员工信息Action -->
+	<bean name="/injure"
+		class="com.dsm.action.InjureAction">
+		<property name="iinjureBiz" ref="InjureBizImpl"></property>
+	</bean>
+	
+	
+	
+	
+	<!-- 部门信息DAO -->
+	<bean id="DepartDao"
+		class="com.dsm.dao.impl.DepartDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!-- 将部门信息dao注入到业务(部门信息) -->
+	<bean id="DepartBizImpl"
+		class="com.dsm.biz.impl.DepartBizImpl">
+		<property name="idepartDao" ref="DepartDao"></property>
+	</bean>
+	<!-- 将部门信息业务注入到部门信息Action -->
+	<bean name="/depart"
+		class="com.dsm.action.DepartAction">
+		<property name="idepartBiz" ref="DepartBizImpl"></property>
+	</bean>
+	
+</beans>

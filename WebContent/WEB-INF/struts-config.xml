@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="userInfoForm" type="com.dsm.form.UserInfoForm" />
+		<form-bean name="userRoleForm" type="com.dsm.form.UserRoleForm" />
+		<form-bean name="treeNodeForm" type="com.dsm.form.TreeNodeForm" />
+		<form-bean name="stuffForm"  type="com.dsm.form.StuffForm" />
+		<form-bean name="injureForm" type="com.dsm.form.InjureForm" />
+		<form-bean name="departForm" type="com.dsm.form.DepartForm" />
+	</form-beans>
+	<global-exceptions />
+	<global-forwards />
+	<action-mappings>
+		<!-- 用户信息管理 -->
+		<action attribute="userInfoForm" input="/login.jsp"
+			name="userInfoForm" parameter="operator" path="/userInfo"
+			scope="request"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" />
+
+		<!-- 用户权限管理 -->
+		<action attribute="userRoleForm" name="userRoleForm"
+			parameter="operator" path="/userRole" scope="request"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" />
+
+		<!-- 动态树的节点管理 -->
+		<action attribute="treeNodeForm" name="treeNodeForm"
+			parameter="operator" path="/treeNode" scope="request"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" />
+			
+		<!-- 员工信息管理 -->
+		<action attribute="stuffForm" name="stuffForm"
+			parameter="operator" path="/stuff" scope="request"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" />
+			
+		<!-- 工伤档案管理 -->
+		<action attribute="injureForm" name="injureForm"
+			parameter="operator" path="/injure" scope="request"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" />
+		
+		<!-- 部门管理 -->
+		<action attribute="departForm" name="departForm"
+			parameter="operator" path="/depart" scope="request"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" />
+	</action-mappings>
+	<message-resources parameter="com.dsm.struts.ApplicationResources" />
+</struts-config>
+

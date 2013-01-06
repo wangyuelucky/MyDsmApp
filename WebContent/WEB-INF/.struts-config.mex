@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/userInfo.do" location="50,50" dimension="358,84" />
+  <StrutsActivity path="/userRole.do" location="50,250" dimension="358,84" />
+  <StrutsActivity path="/treeNode.do" location="950,50" dimension="358,84" />
+  <StrutsActivity path="/stuff.do" location="650,250" dimension="358,84" />
+  <StrutsActivity path="/injure.do" location="50,450" dimension="358,84" />
+  <StrutsActivity path="/login.jsp" location="650,50" dimension="100,48" />
+  <StrutsActivity path="/depart.do" />
+  <StrutsTransition id="/login.jsp,null,/userInfo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="0,0" />
+      <AbsolutePoint location="0,0" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

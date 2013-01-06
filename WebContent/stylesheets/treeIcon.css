@@ -1,0 +1,21 @@
+.x-tree-node-collapsed .x-tree-node-icon {
+   background:url(../images/tree/srims.png) no-repeat left !important;
+   line-height:16px !important;
+}
+	
+.x-tree-node-expanded .x-tree-node-icon {
+   background:url(../images/tree/branch.png) no-repeat left !important;
+   line-height:16px !important;
+}
+	
+.wy-projectLeafIcon{
+	background-image: url(../images/tree/treeNodeLeafIcon.png) !important;
+}
+
+.wy-projectPackageIcon{
+	background-image: url(../images/tree/treeNodePackage.png) !important;
+}
+
+.wy-deviceLeafIcon{
+	background-image: url(../images/tree/leaf.png) !important;
+}
